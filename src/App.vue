@@ -1,42 +1,39 @@
 <template>
   <div id="app" class="h-100">
     <nav id="nav" class="navbar navbar-dark bg-secondary text-white">
-      <span class='h-100 nav-form'>
+      <div class='h-100 nav-form col-sm-7'>
         Welcome,
         <b-form-input :value="store.state.name" @input="updateName" placeholder="wait a minute...who are you?" class="d-inline form-control form-control-sm h-100 align-baseline" style="width: 200px"/>
-      </span>
-      <span class="float-right">
-        {{ store.state.connectionState }}
-        <button
-          class="btn btn-primary d-inline btn-sm ml-1 align-baseline"
-          v-if="store.state.connectionState === 'Disconnected'"
-          @click="connect(false)"
-        >
-          Connect
-        </button>
-        <button
-          class="btn btn-primary d-inline btn-sm ml-1 align-baseline"
-          v-if="store.state.connectionState === 'Disconnected'"
-          @click="connect(true)"
-        >
-          Connect as host
-        </button>
-        <button
-          class="btn btn-primary d-inline btn-sm ml-1 align-baseline"
-          v-else-if="store.state.connectionState === 'Connected'"
-          @click="store.dispatch('disconnect')"
-        >
-          Disconnect
-        </button>
-      </span>
+      </div>
+      <button
+        class="btn btn-primary d-inline btn-sm ml-1 align-baseline mt-2 mt-sm-0"
+        v-if="store.state.connectionState === 'Disconnected'"
+        @click="connect(false)"
+      >Connect</button>
+      <button
+        class="btn btn-primary d-inline btn-sm ml-1 align-baseline mt-2 mt-sm-0"
+        v-if="store.state.connectionState === 'Disconnected'"
+        @click="connect(true)"
+        v-b-tooltip.hover
+        title="Connect as a host; the host can clear buzzes"
+      >Connect as host</button>
+      <button
+        class="btn btn-primary d-inline btn-sm ml-1 align-baseline mt-2 mt-sm-0"
+        v-else-if="store.state.connectionState === 'Connected'"
+        @click="store.dispatch('disconnect')"
+      >Disconnect</button>
     </nav>
     <div class="container pt-3">
       <router-view/>
       <Alerts class="fixed-bottom pr-3 pl-3 mb-5 pb-5"/>
-      <div class="w-100 bg-secondary text-white p-2 fixed-bottom mt-3">
-        <span>Built with Vue.js and TypeScript, styled with Bootstrap Vue, made in VSCode, and deployed on GitHub Pages. Uses a websocket server deployed on Heroku for peer-to-peer communication.</span><br>
-        <a href="hsscholarbowl.github.com/hssb">Website code</a>
-        <a href="hsscholarbowl.github.com/server" class="ml-2">Server code</a>
+      <div class="w-100 bg-secondary text-white p-2 fixed-bottom mt-3 row ml-0">
+        <span class="col-md-9 col-12">
+          Built with Vue.js and TypeScript, styled with Bootstrap Vue, made in VSCode, and deployed on GitHub Pages. Uses a websocket server deployed on Heroku for peer-to-peer communication.
+        </span>
+        <div class="float-right col-12 col-md-3">
+          <a href="hsscholarbowl.github.com/hssb" class="float-md-right float-xs-left col">Website code</a>
+          <a href="hsscholarbowl.github.com/server" class="ml-2 ml-auto col">Server code</a>
+        </div>
       </div>
     </div>
   </div>
