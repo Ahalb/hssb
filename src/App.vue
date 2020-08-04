@@ -1,12 +1,5 @@
 <template>
   <div id="app" class="h-100">
-    <div style="position: fixed; top: 5px; left: 5px; z-index: 3" class="text-white bg-primary">
-      <span class="d-inline-block d-sm-none">XS</span>
-      <span class="d-none d-sm-inline-block d-md-none">SM</span>
-      <span class="d-none d-md-inline-block d-lg-none">MD</span>
-      <span class="d-none d-lg-inline-block d-xl-none">LG</span>
-      <span class="d-none d-xl-inline-block">XL</span>
-    </div>
     <nav id="nav" class="navbar navbar-dark bg-secondary text-white">
       <div class='h-100 nav-form'>
         Welcome,
