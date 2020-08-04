@@ -1,30 +1,37 @@
 <template>
   <div id="app" class="h-100">
+    <div style="position: fixed; top: 5px; left: 5px; z-index: 3" class="text-white bg-primary">
+      <span class="d-inline-block d-sm-none">XS</span>
+      <span class="d-none d-sm-inline-block d-md-none">SM</span>
+      <span class="d-none d-md-inline-block d-lg-none">MD</span>
+      <span class="d-none d-lg-inline-block d-xl-none">LG</span>
+      <span class="d-none d-xl-inline-block">XL</span>
+    </div>
     <nav id="nav" class="navbar navbar-dark bg-secondary text-white">
-      <div class='h-100 nav-form col-sm-7'>
+      <div class='h-100 nav-form'>
         Welcome,
         <b-form-input :value="store.state.name" @input="updateName" placeholder="wait a minute...who are you?" class="d-inline form-control form-control-sm h-100 align-baseline" style="width: 200px"/>
       </div>
+    </nav>
+    <div class="container pt-3">
       <button
-        class="btn btn-primary d-inline btn-sm ml-1 align-baseline mt-2 mt-sm-0"
-        v-if="store.state.connectionState === 'Disconnected'"
+        class="btn btn-primary d-inline btn-sm ml-1 align-baseline mt-3 mt-sm-0 col-md"
+        v-if="store.state.connectionState !== 'Connected'"
         @click="connect(false)"
       >Connect</button>
       <button
-        class="btn btn-primary d-inline btn-sm ml-1 align-baseline mt-2 mt-sm-0"
-        v-if="store.state.connectionState === 'Disconnected'"
+        class="btn btn-primary d-inline btn-sm ml-1 align-baseline mt-2 col-md"
+        v-if="store.state.connectionState !== 'Connected'"
         @click="connect(true)"
         v-b-tooltip.hover
         title="Connect as a host; the host can clear buzzes"
       >Connect as host</button>
       <button
-        class="btn btn-primary d-inline btn-sm ml-1 align-baseline mt-2 mt-sm-0"
-        v-else-if="store.state.connectionState === 'Connected'"
+        class="btn btn-primary d-inline btn-sm ml-1 align-baseline col-md"
+        v-else
         @click="store.dispatch('disconnect')"
       >Disconnect</button>
-    </nav>
-    <div class="container pt-3">
-      <router-view/>
+      <router-view class="mt-3" />
       <Alerts class="fixed-bottom pr-3 pl-3 mb-5 pb-5"/>
       <div class="w-100 bg-secondary text-white p-2 fixed-bottom mt-3 row ml-0">
         <span class="col-md-9 col-12">
