@@ -49,7 +49,7 @@ export default new Vuex.Store({
     },
     updateHosts(state) {
       state.isHost = state.name === state.host;
-    }
+    },
   },
   actions: {
     start({ commit }) {
@@ -142,6 +142,9 @@ export default new Vuex.Store({
       commit('addHost', user);
       commit('setHost', user === state.name)
       commit('updateHosts')
+    },
+    triggerOnline({ state }) {
+      state.connection.send(`name ${state.name}`)
     }
   },
   modules: {
