@@ -8,19 +8,19 @@
     </nav>
     <div class="container pt-3">
       <button
-        class="btn btn-primary d-inline btn-sm ml-1 align-baseline mt-3 mt-sm-0 col-md"
+        class="btn btn-primary d-inline btn-sm align-baseline mt-3 mt-sm-0 col-md"
         v-if="store.state.connectionState !== 'Connected'"
         @click="connect(false)"
       >Connect</button>
       <button
-        class="btn btn-primary d-inline btn-sm ml-1 align-baseline mt-2 col-md"
+        class="btn btn-primary d-inline btn-sm align-baseline mt-2 col-md"
         v-if="store.state.connectionState !== 'Connected'"
         @click="connect(true)"
         v-b-tooltip.hover
         title="Connect as a host; the host can clear buzzes"
       >Connect as host</button>
       <button
-        class="btn btn-primary d-inline btn-sm ml-1 align-baseline col-md"
+        class="btn btn-primary d-inline btn-sm align-baseline col-md"
         v-else
         @click="store.dispatch('disconnect')"
       >Disconnect</button>
