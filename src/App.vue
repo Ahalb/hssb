@@ -25,7 +25,7 @@
         @click="store.dispatch('disconnect')"
       >Disconnect</button>
       <router-view class="mt-3" />
-      <Alerts class="fixed-bottom pr-3 pl-3 mb-5 pb-5"/>
+      <Alerts class="sticky-bottom pr-3 pl-3 mb-5 pb-5"/>
       <div class="w-100 bg-secondary text-white p-2 fixed-bottom mt-3 row ml-0">
         <span class="col-md-9 col-12">
           Built with Vue.js and TypeScript, styled with Bootstrap Vue, made in VSCode, and deployed on GitHub Pages. Uses a websocket server deployed on Heroku for peer-to-peer communication.
