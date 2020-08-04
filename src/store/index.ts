@@ -57,11 +57,13 @@ export default new Vuex.Store({
         alert("Your browser doesn't support local storage - that's an issue. Please use a modern browser that does");
         return;
       }
+      let name: string;
       if (localStorage.hasName) {
-        commit('setName', JSON.parse(localStorage.hasName));
+        name = JSON.parse(localStorage.hasName);
       } else {
-        commit('setName', prompt('What name would you like to use?'))
+        name = prompt('What name would you like to use?')?.trim() || ''
       }
+      commit('setName', name?.length ? name : 'Anonymous');
     },
     async connect({ commit, dispatch }, host = false) {
       commit('changeConnectionState', 'Connecting...')

@@ -1,0 +1,10 @@
+html, body {
+  height: 100%;
+}
+
+$primary: rgb(175, 175, 175);
+$secondary: darkred;
+
+.list-group-item.active {
+  background-color: $secondary !important;
+}

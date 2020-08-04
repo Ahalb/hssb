@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button @click="buzz" class="btn btn-primary btn-lg w-100 mb-3">Buzz</button>
-    <button @click="clear" class="btn btn-primary btn-lg w-100 mb-3" v-if="isHost">Clear</button>
+    <button @click="buzz" class="btn btn-secondary btn-lg w-100 mb-3">Buzz</button>
+    <button @click="clear" class="btn btn-secondary btn-lg w-100 mb-3" v-if="isHost">Clear</button>
     <div v-if="onlineList.length">
       <h4>Online</h4>
       <b-list-group>

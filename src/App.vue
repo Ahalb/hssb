@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <nav id="nav" class="navbar navbar-dark bg-secondary">
+  <div id="app" class="h-100">
+    <nav id="nav" class="navbar navbar-dark bg-secondary text-white">
       <span class='h-100 nav-form'>
         Welcome,
         <b-form-input :value="store.state.name" @input="updateName" placeholder="wait a minute...who are you?" class="d-inline form-control form-control-sm h-100 align-baseline" style="width: 200px"/>
@@ -32,7 +32,12 @@
     </nav>
     <div class="container pt-3">
       <router-view/>
-      <Alerts class="fixed-bottom pr-3 pl-3"/>
+      <Alerts class="fixed-bottom pr-3 pl-3 mb-5 pb-5"/>
+      <div class="w-100 bg-secondary text-white p-2 fixed-bottom mt-3">
+        <span>Built with Vue.js and TypeScript, styled with Bootstrap Vue, made in VSCode, and deployed on GitHub Pages. Uses a websocket server deployed on Heroku for peer-to-peer communication.</span><br>
+        <a href="hsscholarbowl.github.com/hssb">Website code</a>
+        <a href="hsscholarbowl.github.com/server" class="ml-2">Server code</a>
+      </div>
     </div>
   </div>
 </template>
@@ -62,8 +67,8 @@ export default class App extends Vue {
     return store;
   }
 
-  updateName(event: KeyboardEvent) {
-    store.commit('setName', (event.target as HTMLInputElement).value);
+  updateName(event: string) {
+    store.commit('setName', event);
   }
 
   connect(host = false) {
