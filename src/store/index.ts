@@ -9,7 +9,7 @@ export default new Vuex.Store({
     alerts: [] as string[],
     connectionState: 'Disconnected',
     isHost: false,
-    connection: new WebSocket('ws://scholar-bowl-server.herokuapp.com', 'echo-protocol'),
+    connection: new WebSocket('wss://scholar-bowl-server.herokuapp.com', 'echo-protocol'),
     activeBuzzer: null as string | null,
     onlineList: [] as string[],
     host: '',
@@ -86,7 +86,7 @@ export default new Vuex.Store({
       commit('addAlert', 'You cleared');
     },
     async join({ commit, dispatch, state }) {
-      let connection = new WebSocket('ws://scholar-bowl-server.herokuapp.com', 'echo-protocol');
+      let connection = new WebSocket('wss://scholar-bowl-server.herokuapp.com', 'echo-protocol');
       connection.onopen = (e) => {
         commit('changeConnectionState', 'Connected')
         if (state.isHost) connection.send(`host ${state.name}`)
