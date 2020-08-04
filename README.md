@@ -1,5 +1,7 @@
 # hssb
 
+stuff
+
 ## Project setup
 ```
 npm install
