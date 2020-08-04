@@ -53,6 +53,7 @@ Vue.use(BootstrapVue);
 })
 export default class App extends Vue {
   mounted() {
+    document.title = 'HS Scholar Bowl'
     store.dispatch('start')
   }
 
