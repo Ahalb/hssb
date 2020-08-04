@@ -31,8 +31,8 @@
           Built with Vue.js and TypeScript, styled with Bootstrap Vue, made in VSCode, and deployed on GitHub Pages. Uses a websocket server deployed on Heroku for peer-to-peer communication.
         </span>
         <div class="float-right col-12 col-md-3">
-          <a href="hsscholarbowl.github.com/hssb" class="float-md-right float-xs-left col">Website code</a>
-          <a href="hsscholarbowl.github.com/server" class="ml-2 ml-auto col">Server code</a>
+          <a href="https://hsscholarbowl.github.com/hssb" class="col">Code</a>
+          <a href="https://hsscholarbowl.github.com/server" class="ml-2 col">Server</a>
         </div>
       </div>
     </div>
