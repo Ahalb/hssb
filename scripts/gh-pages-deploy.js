@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 // @ts-nocheck
-import execa from "execa";
-import { existsSync } from "fs";
+const execa = require("execa");
+const fs = require("fs");
 
 (async () => {
   try {
@@ -10,7 +11,7 @@ import { existsSync } from "fs";
     await execa("npm", ["run", "build"]);
     // Understand if it's dist or build folder
     console.log('Getting folder...');
-    const folderName = existsSync("dist") ? "dist" : "build";
+    const folderName = fs.existsSync("dist") ? "dist" : "build";
     console.log('Adding changes...');
     await execa("git", ["--work-tree", folderName, "add", "--all"]);
     console.log('Committing changes...');
