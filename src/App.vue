@@ -3,7 +3,7 @@
     <nav id="nav" class="navbar navbar-dark bg-secondary text-white">
       <div class='h-100 nav-form'>
         Welcome,
-        <b-form-input :value="store.state.name" @input="updateName" placeholder="wait a minute...who are you?" class="d-inline form-control form-control-sm h-100 align-baseline" style="width: 200px"/>
+        <b-form-input :value="store.state.name" @input="updateName" placeholder="wait a minute...who are you?" class="d-inline form-control form-control-sm h-100 align-baseline" style="width: 200px" aria-label="name"/>
       </div>
     </nav>
     <div class="container pt-3">
@@ -25,8 +25,9 @@
         @click="store.dispatch('disconnect')"
       >Disconnect</button>
       <router-view class="mt-3" />
+      <a class="sr-only" href="#footer">Skip alerts</a>
       <Alerts class="sticky-bottom mb-5 pb-5"/>
-      <div class="w-100 bg-secondary text-white p-2 fixed-bottom mt-3 row ml-0">
+      <footer class="w-100 bg-secondary text-white p-2 fixed-bottom mt-3 row ml-0" id="footer">
         <span class="col-md-9 col-12">
           Built with Vue.js and TypeScript, styled with Bootstrap Vue, made in VSCode, and deployed on GitHub Pages. Uses a websocket server deployed on Heroku for peer-to-peer communication.
         </span>
@@ -34,7 +35,7 @@
           <a href="https://hsscholarbowl.github.com/hssb" class="col">Code</a>
           <a href="https://hsscholarbowl.github.com/server" class="ml-2 col">Server</a>
         </div>
-      </div>
+      </footer>
     </div>
   </div>
 </template>

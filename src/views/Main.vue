@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main id="main">
     <button @click="buzz" class="btn btn-secondary btn-lg w-100 mb-3">Buzz</button>
     <button @click="clear" class="btn btn-secondary btn-lg w-100 mb-3" v-if="isHost">Clear</button>
     <div v-if="onlineList.length" class="mb-3">
@@ -18,7 +18,7 @@
         </b-list-group-item>
       </b-list-group>
     </div>
-  </div>
+  </main>
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
