@@ -1,9 +1,11 @@
 <template>
   <div id="app" class="h-100">
+    <router-link to="#main" class="skiplink" @click.native="scrollFix('#main')">Skip to content</router-link>
     <nav id="nav" class="navbar navbar-dark bg-secondary text-white">
       <div class='h-100 nav-form'>
         Welcome,
-        <b-form-input :value="store.state.name" @input="updateName" placeholder="wait a minute...who are you?" class="d-inline form-control form-control-sm h-100 align-baseline" style="width: 200px" aria-label="name"/>
+        <b-form-input :value="store.state.name" @input="updateName" placeholder="wait a minute...who are you?" class="d-inline form-control form-control-sm h-100 align-baseline" style="width: 200px" id="name"/>
+        <label for="name" class="sr-only">name</label>
       </div>
     </nav>
     <div class="container pt-3">
@@ -73,8 +75,41 @@ export default class App extends Vue {
   connect(host = false) {
     store.dispatch('connect', host);
   }
+  scrollFix(hashbang: string) {
+      window.location.hash = hashbang;
+  }
 }
 </script>
 <style lang="scss">
 @import '@/styles/global.scss';
+</style>
+<style scoped lang="scss">
+@import '@/styles/global.scss';
+.skiplink {
+  background-color: $primary;
+  padding: 3px 6px;
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 0 none;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 1px;
+  color: $secondary;
+  box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.75);
+  z-index: 2;
+}
+.skiplink:focus {
+  clip: auto;
+  height: auto;
+  position: fixed;
+  width: auto;
+}
+.skiplink:focus:hover {
+  color: $dark;
+}
 </style>
