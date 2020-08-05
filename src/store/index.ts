@@ -63,17 +63,18 @@ export default new Vuex.Store({
       } else {
         commit('addAlert', "I don't know who you are! Tell me in the upper left");
         commit('addAlert', "New here? Try adding me to the home screen or installing me as an app!");
-        let deferredPrompt: InstallEvent;
+        let deferredPrompt: Event;
         window.addEventListener('beforeinstallprompt', (e: Event) => {
           // Prevent the mini-infobar from appearing on mobile
           e.preventDefault();
           // Stash the event so it can be triggered later.
-          deferredPrompt = e as InstallEvent;
+          deferredPrompt = e;
           // Update UI notify the user they can install the PWA
           let el = document.createElement('button');
           el.innerHTML = 'install';
           document.body.appendChild(el);
           console.log(2);
+          // @ts-expect-error
           el.onclick = deferredPrompt.prompt;
         });
       }
