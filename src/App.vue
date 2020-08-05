@@ -33,9 +33,9 @@
         <span class="col-md-9 col-12">
           Built with Vue.js and TypeScript, styled with Bootstrap Vue, made in VSCode, and deployed on GitHub Pages. Uses a websocket server deployed on Heroku for peer-to-peer communication.
         </span>
-        <div class="float-right col-12 col-md-3">
+        <div class="col-12 col-md-3">
           <a href="https://hsscholarbowl.github.com/hssb" class="col">Code</a>
-          <a href="https://hsscholarbowl.github.com/server" class="ml-2 col">Server</a>
+          <a href="https://hsscholarbowl.github.com/server" class="ml-2 col clearfix" style="position: relative; right: 0px">Server</a>
         </div>
       </footer>
     </div>

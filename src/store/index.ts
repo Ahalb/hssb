@@ -62,6 +62,20 @@ export default new Vuex.Store({
         name = JSON.parse(localStorage.hasName);
       } else {
         commit('addAlert', "I don't know who you are! Tell me in the upper left");
+        commit('addAlert', "New here? Try adding me to the home screen or installing me as an app!");
+        let deferredPrompt: InstallEvent;
+        window.addEventListener('beforeinstallprompt', (e: Event) => {
+          // Prevent the mini-infobar from appearing on mobile
+          e.preventDefault();
+          // Stash the event so it can be triggered later.
+          deferredPrompt = e as InstallEvent;
+          // Update UI notify the user they can install the PWA
+          let el = document.createElement('button');
+          el.innerHTML = 'install';
+          document.body.appendChild(el);
+          console.log(2);
+          el.onclick = deferredPrompt.prompt;
+        });
       }
       commit('setName', name?.length ? name : 'Anonymous');
     },
@@ -95,7 +109,7 @@ export default new Vuex.Store({
         commit('updateHosts')
       }
       connection.onclose = (e) => {
-        commit('addAlert', `Connection ${e.wasClean ? '' : '(not cleanly) '}closed: ${e.reason}`)
+        commit('addAlert', `Connection ${e.wasClean ? '' : '(not cleanly) '}closed ${e.reason.length ? `:${e.reason}` : ''}`)
       };
       connection.onmessage = (e) => {
         let msg = e.data as string;

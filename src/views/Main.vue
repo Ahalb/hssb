@@ -18,6 +18,7 @@
         </b-list-group-item>
       </b-list-group>
     </div>
+    <button id="installButton">install</button>
   </main>
 </template>
 <script lang="ts">

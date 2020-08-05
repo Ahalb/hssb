@@ -1,8 +1,8 @@
 <template>
   <div>
     <b-alert
-      v-for="alert in alerts"
-      :key="alert"
+      v-for="(alert, index) in alerts"
+      :key="`${alert}${index}`"
       show=5
       fade
       dismissible
