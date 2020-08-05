@@ -1,6 +1,6 @@
 // @ts-nocheck
-const execa = require("execa");
-const fs = require("fs");
+import execa from "execa";
+import { existsSync } from "fs";
 
 (async () => {
   try {
@@ -10,7 +10,7 @@ const fs = require("fs");
     await execa("npm", ["run", "build"]);
     // Understand if it's dist or build folder
     console.log('Getting folder...');
-    const folderName = fs.existsSync("dist") ? "dist" : "build";
+    const folderName = existsSync("dist") ? "dist" : "build";
     console.log('Adding changes...');
     await execa("git", ["--work-tree", folderName, "add", "--all"]);
     console.log('Committing changes...');
