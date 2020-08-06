@@ -51,7 +51,6 @@ import { Component, Vue } from 'vue-property-decorator';
 import store from '@/store';
 import BootstrapVue from 'bootstrap-vue';
 import Alerts from '@/views/Alerts.vue';
-// @ts-expect-error
 import debounce from 'lodash.debounce';
 
 Vue.use(BootstrapVue);
