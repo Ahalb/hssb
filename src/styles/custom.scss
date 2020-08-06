@@ -8,3 +8,8 @@ $secondary: darkred;
 .list-group-item.active {
   background-color: $secondary !important;
 }
+
+.list-group-item.active > .make-host {
+  background-color: $primary !important;
+  color: $secondary !important;
+}

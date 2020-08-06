@@ -15,6 +15,11 @@
         @click="connect(false)"
       >Connect</button>
       <button
+        class="btn btn-primary d-inline btn-sm align-baseline col-md"
+        v-else
+        @click="store.dispatch('disconnect')"
+      >Disconnect</button>
+      <button
         class="btn btn-primary d-inline btn-sm align-baseline mt-2 col-md"
         v-if="store.state.connectionState !== 'Connected'"
         @click="connect(true)"
@@ -22,10 +27,10 @@
         title="Connect as a host; the host can clear buzzes"
       >Connect as host</button>
       <button
-        class="btn btn-primary d-inline btn-sm align-baseline col-md"
+        class="btn btn-primary d-inline btn-sm align-baseline col-md mt-2"
         v-else
-        @click="store.dispatch('disconnect')"
-      >Disconnect</button>
+        @click="reconnect"
+      >Reconnect</button>
       <router-view class="mt-3" />
       <a class="sr-only" href="#footer">Skip alerts</a>
       <Alerts class="sticky-bottom mb-5 pb-5"/>
@@ -46,6 +51,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import store from '@/store';
 import BootstrapVue from 'bootstrap-vue';
 import Alerts from '@/views/Alerts.vue';
+// @ts-expect-error
+import debounce from 'lodash.debounce';
 
 Vue.use(BootstrapVue);
 
@@ -70,13 +77,23 @@ export default class App extends Vue {
 
   updateName(event: string) {
     store.commit('setName', event);
+    if (!event.includes(',') && event.trim().length) this.debounceReconnect();
   }
+
+  debounceReconnect = debounce(this.reconnect, 500);
 
   connect(host = false) {
     store.dispatch('connect', host);
   }
+
   scrollFix(hashbang: string) {
       window.location.hash = hashbang;
+  }
+
+  async reconnect() {
+    let currentlyIsHost = store.state.name === store.state.host;
+    await store.dispatch('disconnect');
+    await store.dispatch('connect', currentlyIsHost);
   }
 }
 </script>

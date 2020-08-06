@@ -14,11 +14,10 @@
             <span v-b-tooltip.hover :title="`${user} is the host`">{{ host === user ? '◆' : ''}}</span>
             {{ user }}
           </span>
-          <b-button class="btn-sm float-right" v-if="host !== user && isHost" @click="makeHost(user)">Make Host</b-button>
+          <b-button class="btn-sm float-right make-host" v-if="host !== user && isHost" @click="makeHost(user)">Make Host</b-button>
         </b-list-group-item>
       </b-list-group>
     </div>
-    <button id="installButton">install</button>
   </main>
 </template>
 <script lang="ts">
@@ -31,7 +30,7 @@ export default class Main extends Vue {
   }
 
   get isHost() {
-    return store.state.isHost;
+    return this.host === this.name;
   }
 
   get onlineList() {

@@ -8,7 +8,6 @@ export default new Vuex.Store({
     name: '',
     alerts: [] as string[],
     connectionState: 'Disconnected',
-    isHost: false,
     connection: new WebSocket('wss://scholar-bowl-server.herokuapp.com', 'echo-protocol'),
     activeBuzzer: null as string | null,
     onlineList: [] as string[],
@@ -28,12 +27,6 @@ export default new Vuex.Store({
     changeConnectionState(state, to: string) {
       state.connectionState = to;
     },
-    setHost(state, to) {
-      state.isHost = to;
-      if (to) {
-        state.host = state.name;
-      }
-    },
     setConnection(state, connection) {
       state.connection = connection;
     },
@@ -43,12 +36,8 @@ export default new Vuex.Store({
     setOnline(state, to: string[]) {
       state.onlineList = to;
     },
-    addHost(state, user) {
+    setHost(state, user) {
       state.host = user;
-      state.isHost = state.name === state.host;
-    },
-    updateHosts(state) {
-      state.isHost = state.name === state.host;
     },
   },
   actions: {
@@ -68,9 +57,7 @@ export default new Vuex.Store({
     },
     async connect({ commit, dispatch }, host = false) {
       commit('changeConnectionState', 'Connecting...')
-      commit('setHost', host)
-      commit('updateHosts')
-      dispatch('join')
+      dispatch('join', host)
     },
     async disconnect({ commit, state }) {
       state.connection.close();
@@ -78,50 +65,69 @@ export default new Vuex.Store({
     },
     buzz({ state, commit }) {
       if (state.activeBuzzer === null) {
-        state.connection.send(`buzz ${state.name}`)
+        state.connection.send(`BUZZ ${state.name}`)
         commit('setBuzzer', state.name);
         commit('addAlert', 'You buzzed');
       } else commit('addAlert', `${state.activeBuzzer === state.name ? 'You have' : `${state.activeBuzzer} has`} already buzzed`);
     },
     clear({ state, commit }) {
-      state.connection.send('clear')
+      state.connection.send('CLEAR')
       commit('setBuzzer', 'null');
       commit('addAlert', 'You cleared');
     },
-    async join({ commit, dispatch, state }) {
-      let connection = new WebSocket('wss://scholar-bowl-server.herokuapp.com', 'echo-protocol');
+    async join({ commit, dispatch, state }, host = false) {
+      // let connection = new WebSocket('wss://scholar-bowl-server.herokuapp.com', 'echo-protocol');
+      let connection = new WebSocket('ws://localhost:8080', 'echo-protocol')
       connection.onopen = (e) => {
         commit('changeConnectionState', 'Connected')
-        if (state.isHost) connection.send(`host ${state.name}`)
-        commit('updateHosts')
       }
       connection.onclose = (e) => {
-        commit('addAlert', `Connection ${e.wasClean ? '' : '(not cleanly) '}closed ${e.reason.length ? `:${e.reason}` : ''}`)
+        commit('addAlert', `Connection ${e.wasClean ? '' : '(not cleanly) '}closed${e.reason.length ? `: ${e.reason}` : ''}`)
       };
       connection.onmessage = (e) => {
         let msg = e.data as string;
-        if (msg.startsWith('buzz')) {
-          let from = msg.replace(/^buzz /, '')
-          dispatch('onBuzz', from);
-        } else if (msg.startsWith('clear')) {
-          dispatch('onClear');
-        } else if (msg.startsWith('names')) {
-          connection.send(`name ${state.name}`);
-        } else if (msg.startsWith('host')) {
-          let host = msg.replace(/^host /, '');
-          if (host === state.name) {
-            commit('setHost', true);
-            commit('addAlert', 'You are now the host')
-          }
-          commit('addHost', host);
-          commit('updateHosts')
-        } else if (msg.startsWith('online')) {
-          let online = msg.replace(/^online /, '').split(',');
-          commit('setOnline', online);
-          commit('updateHosts')
-          if (state.isHost) connection.send(`host ${state.name}`)
-        } else {
-          commit('addAlert', `Unknown message type: ${msg}`);
+        let command = msg.match(/^\S+/) ? msg.match(/^\S+/)![0] : null;
+        let params = msg.match(/ (\S+\s)*(\S+)$/) ? msg.match(/ (\S+\s)*(\S+)$/)![0].slice(1) : '';
+        if (command === null) return;
+        switch(command) {
+          case 'BUZZ':
+            dispatch('onBuzz', params);
+            break;
+          case 'CLEAR':
+            dispatch('onClear');
+            break;
+          case 'NAME':
+            if (host) {
+              commit('setHost', state.name);
+            }
+            connection.send(`NAME ${state.name}${host ? ' HOST' : ''}`);
+            break;
+          case 'NAME_IN_USE':
+            if (state.name.startsWith('Anonymous')) {
+              let match = state.name.match(/\d+$/);
+              let num = parseInt(match ? match[0] : '0', 10);
+              commit('setName', `Anonymous${num + 1}`)
+              this.dispatch('join', host)
+            } else {
+              commit('addAlert', 'Someone else is using that name. Please try a different one and reconnect');
+              this.dispatch('disconnect')
+            }
+            break;
+          case 'SUCCESS':
+            commit('addAlert', 'Successfully connected');
+            break;
+          case 'HOST':
+            if (params === state.name) {
+              commit('addAlert', 'You are now the host')
+            }
+            commit('setHost', params);
+            break;
+          case 'ONLINE':
+            commit('setOnline', params.trim().split(','));
+            break;
+          default:
+            commit('addAlert', `Unknown message type: ${msg}`);
+            break;
         }
       }
       connection.onerror = (e) => {
@@ -139,14 +145,9 @@ export default new Vuex.Store({
       commit('setBuzzer', 'null');
     },
     host({ state, commit }, user: string) {
-      state.connection.send(`host ${user}`);
-      commit('addHost', user);
-      commit('setHost', user === state.name)
-      commit('updateHosts')
+      state.connection.send(`HOST ${user}`);
+      commit('setHost', user)
     },
-    triggerOnline({ state }) {
-      state.connection.send(`name ${state.name}`)
-    }
   },
   modules: {
   },
