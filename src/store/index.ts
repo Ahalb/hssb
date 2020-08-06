@@ -76,8 +76,8 @@ export default new Vuex.Store({
       commit('addAlert', 'You cleared');
     },
     async join({ commit, dispatch, state }, host = false) {
-      // let connection = new WebSocket('wss://scholar-bowl-server.herokuapp.com', 'echo-protocol');
-      let connection = new WebSocket('ws://localhost:8080', 'echo-protocol')
+      let connection = new WebSocket('wss://scholar-bowl-server.herokuapp.com', 'echo-protocol');
+      // let connection = new WebSocket('ws://localhost:8080', 'echo-protocol')
       connection.onopen = (e) => {
         commit('changeConnectionState', 'Connected')
       }
