@@ -1,48 +1,14 @@
 <template>
   <div id="app" class="h-100">
     <router-link to="#main" class="skiplink" @click.native="scrollFix('#main')">Skip to content</router-link>
-    <nav id="nav" class="navbar navbar-dark bg-secondary text-white">
-      <div class='h-100 nav-form'>
-        Welcome,
-        <b-form-input :value="store.state.name" @input="updateName" placeholder="wait a minute...who are you?" class="d-inline form-control form-control-sm h-100 align-baseline" style="width: 200px" id="name"/>
-        <label for="name" class="sr-only">name</label>
-      </div>
-    </nav>
+    <Navbar />
     <div class="container pt-3">
-      <button
-        class="btn btn-primary d-inline btn-sm align-baseline mt-3 mt-sm-0 col-md"
-        v-if="store.state.connectionState !== 'Connected'"
-        @click="connect(false)"
-      >Connect</button>
-      <button
-        class="btn btn-primary d-inline btn-sm align-baseline col-md"
-        v-else
-        @click="store.dispatch('disconnect')"
-      >Disconnect</button>
-      <button
-        class="btn btn-primary d-inline btn-sm align-baseline mt-2 col-md"
-        v-if="store.state.connectionState !== 'Connected'"
-        @click="connect(true)"
-        v-b-tooltip.hover
-        title="Connect as a host; the host can clear buzzes"
-      >Connect as host</button>
-      <button
-        class="btn btn-primary d-inline btn-sm align-baseline col-md mt-2"
-        v-else
-        @click="reconnect"
-      >Reconnect</button>
-      <router-view class="mt-3" />
-      <a class="sr-only" href="#footer">Skip alerts</a>
-      <Alerts class="sticky-bottom mb-5 pb-5"/>
-      <footer class="w-100 bg-secondary text-white p-2 fixed-bottom mt-3 row ml-0" id="footer">
-        <span class="col-md-9 col-12">
-          Built with Vue.js and TypeScript, styled with Bootstrap Vue, made in VSCode, and deployed on GitHub Pages. Uses a websocket server deployed on Heroku for peer-to-peer communication.
-        </span>
-        <div class="col-12 col-md-3">
-          <a href="https://hsscholarbowl.github.com/hssb" class="col">Code</a>
-          <a href="https://hsscholarbowl.github.com/server" class="ml-2 col clearfix" style="position: relative; right: 0px">Server</a>
-        </div>
-      </footer>
+      <h2 v-if="showName">{{ location}}</h2>
+      <router-view  class="mb-5 pb-5"/>
+      <br class="d-block d-md-none">
+      <br class="d-block d-sm-none">
+      <br class="d-block d-sm-none">
+      <Footer />
     </div>
   </div>
 </template>
@@ -50,14 +16,16 @@
 import { Component, Vue } from 'vue-property-decorator';
 import store from '@/store';
 import BootstrapVue from 'bootstrap-vue';
-import Alerts from '@/views/Alerts.vue';
-import debounce from 'lodash.debounce';
+import Navbar from '@/components/Navbar.vue';
+import Footer from '@/components/Footer.vue';
+import 'nprogress/nprogress.css'
 
 Vue.use(BootstrapVue);
 
 @Component({
   components: {
-    Alerts,
+    Navbar,
+    Footer,
   }
 })
 export default class App extends Vue {
@@ -66,33 +34,17 @@ export default class App extends Vue {
     store.dispatch('start')
   }
 
-  get name() {
-    return store.state.name
-  }
-
-  get store() {
-    return store;
-  }
-
-  updateName(event: string) {
-    store.commit('setName', event);
-    if (!event.includes(',') && event.trim().length) this.debounceReconnect();
-  }
-
-  debounceReconnect = debounce(this.reconnect, 500);
-
-  connect(host = false) {
-    store.dispatch('connect', host);
-  }
-
   scrollFix(hashbang: string) {
       window.location.hash = hashbang;
   }
 
-  async reconnect() {
-    let currentlyIsHost = store.state.name === store.state.host;
-    await store.dispatch('disconnect');
-    await store.dispatch('connect', currentlyIsHost);
+  get showName() {
+    return !(['Main'].includes(this.location));
+  }
+
+  get location() {
+    let { name } = this.$route;
+    return name || '';
   }
 }
 </script>
