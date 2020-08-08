@@ -31,6 +31,7 @@
           v-for="user in onlineList"
           :key="user"
           :active="activeBuzzer === user"
+          v-show="user.trim().length"
         >
           <span class="align-middle">
             <span v-b-tooltip.hover :title="`${user} is the host`">{{ host === user ? '◆' : ''}}</span>
