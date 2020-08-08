@@ -64,6 +64,10 @@ export default new Vuex.Store({
       commit('changeConnectionState', 'Disconnected')
     },
     buzz({ state, commit }) {
+      if (state.connection.readyState !== state.connection.OPEN) {
+        commit('addAlert', 'You haven\'t connected yet!');
+        return;
+      } else console.log(state.connection)
       if (state.activeBuzzer === null) {
         state.connection.send(`BUZZ ${state.name}`)
         commit('setBuzzer', state.name);
@@ -71,6 +75,10 @@ export default new Vuex.Store({
       } else commit('addAlert', `${state.activeBuzzer === state.name ? 'You have' : `${state.activeBuzzer} has`} already buzzed`);
     },
     clear({ state, commit }) {
+      if (state.connection.readyState !== state.connection.OPEN) {
+        commit('addAlert', 'You haven\'t connected yet!');
+        return;
+      }
       state.connection.send('CLEAR')
       commit('setBuzzer', 'null');
       commit('addAlert', 'You cleared');
