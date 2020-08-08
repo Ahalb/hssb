@@ -78,7 +78,7 @@ export default new Vuex.Store({
     async join({ commit, dispatch, state }, host = false) {
       let connection = new WebSocket('wss://scholar-bowl-server.herokuapp.com', 'echo-protocol');
       // let connection = new WebSocket('ws://localhost:8080', 'echo-protocol')
-      connection.onopen = (e) => {
+      connection.onopen = () => {
         commit('changeConnectionState', 'Connected')
       }
       connection.onclose = (e) => {
@@ -86,8 +86,8 @@ export default new Vuex.Store({
       };
       connection.onmessage = (e) => {
         let msg = e.data as string;
-        let command = msg.match(/^\S+/) ? msg.match(/^\S+/)![0] : null;
-        let params = msg.match(/ (\S+\s)*(\S+)$/) ? msg.match(/ (\S+\s)*(\S+)$/)![0].slice(1) : '';
+        let command = (msg.match(/^\S+/) ?? '')[0] ??  null;
+        let params = (msg.match(/ (\S+\s)*(\S+)$/) ?? '')[0] ?? null;
         if (command === null) return;
         switch(command) {
           case 'BUZZ':
