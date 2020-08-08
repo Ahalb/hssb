@@ -772,5 +772,6 @@ const fs = require("fs");
 })();
 </code></pre>
     </details>
+    Still not enough code? See the full source for the website and server on <a class="text-secondary" href="https://github.com/hsscholarbowl">GitHub</a>
   </div>
 </template>
